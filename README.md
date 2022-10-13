@@ -20,3 +20,4 @@ git branch [new-branch-name]
 git checkout [new-branch-name]
 ```
 
+After implemented, push your code to your branch and create Pull Request.
