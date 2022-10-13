@@ -1,10 +1,18 @@
-# SWE 276P: pilates-gold
+# SWE 276P: Pilates Gold
 
+## ❓ About
 
-## **Getting Started**:
+Pilates Gold (PG) is a mobile app developed for the Pilates program sponsored
+by the Department of Physical Medicine and Rehabilitation (PM&R) at UCI School
+of Medicine. The app provides an accessible way for seniors of the Pilates 
+program to have a deeper understanding of the benefits of Pilates and take 
+charge of their health. 
 
+## 🚀 Getting Started
+
+### To Contribute:
 Clone the project into your desired working directory
-``` 
+```
 git clone git@github.com:lonnie-nguyen/pilates-gold.git
 cd pilates-gold
 ```
