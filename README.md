@@ -14,12 +14,12 @@ charge of their health.
 Clone the project into your desired working directory
 ```
 git clone git@github.com:lonnie-nguyen/pilates-gold.git
-cd pilates-gold
+cd pilates-gold/app
 ```
 
 Go to the folder and install the dependencies
 ```
-cd pilates-gold
+cd pilates-gold/app
 npm install
 ```
 
