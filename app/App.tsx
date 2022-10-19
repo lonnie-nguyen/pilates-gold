@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Movements from "./screens/Movements";
-import MovementScreen from "./screens/Movements";
-import WeeklyTipsScreen from "./screens/WeeklyTips";
+import Movements from "./src/screens/Movements";
+import MovementScreen from "./src/screens/Movements";
+import WeeklyTipsScreen from "./src/screens/WeeklyTips";
 
 export default function App() {
 
