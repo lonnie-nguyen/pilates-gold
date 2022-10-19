@@ -1,40 +1,35 @@
 import {useNavigation} from '@react-navigation/core';
-// import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-// import {RootStackParams} from '../AppTabNavigator';
+import {RootStackParams} from "../../App";
 
 const Menu = () => {
-    // const navigation =
-    //     useNavigation<NativeStackNavigationProp<RootStackParams>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Navigation</Text>
             <TouchableOpacity
                 onPress={() => {
-                    // go to explore
-                    // navigation.navigate('ExploreStack');
+                    // go to Movements
+                    navigation.navigate('Movements');
                 }}>
                 <Text style={styles.link}>Movements</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
-                    // go to restaurants
-                    // navigation.navigate('RestaurantsStack');
+                    navigation.navigate('WeeklyTips');
                 }}>
                 <Text style={styles.link}>WeeklyTips</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
-                    // go to profile
-                    // navigation.navigate('Profile');
+                    navigation.navigate('About');
                 }}>
                 <Text style={styles.link}>Abouts</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
-                    // go to profile
-                    // navigation.navigate('Profile');
+                    navigation.navigate('TermsAndConditions');
                 }}>
                 <Text style={styles.link}>TermsAndConditions</Text>
             </TouchableOpacity>
