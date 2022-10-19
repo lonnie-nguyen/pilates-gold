@@ -4,10 +4,9 @@ import { TouchableHighlight } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/core'
 import DrawerMenuIcon from '../icons/DrawerMenuIcon'
 import {DrawerNavigationProp} from "@react-navigation/drawer";
-import {RootStackParams} from "../../App";
 
 const TopDrawerNavigator= () => {
-    const navigation = useNavigation<DrawerNavigationProp<RootStackParams>>()
+    const navigation = useNavigation()
 
     return <View style={styles.container}>
         <TouchableHighlight style={styles.backButton} underlayColor="#f0ddcc" onPress={() => {

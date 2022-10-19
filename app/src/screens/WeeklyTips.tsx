@@ -1,12 +1,11 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import TopDrawerNavigator from "../Components/TopDrawerNavigation";
 
 //This is weekly tips page
 const WeeklyTipsScreen = () => {
     return (
         <View>
-            <TopDrawerNavigator/>
+            <Text>Weekly tips</Text>
         </View>
     );
 };
