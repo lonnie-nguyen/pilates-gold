@@ -2,25 +2,11 @@ import {useNavigation} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {RootStackParams} from "../../App";
 
 const Menu = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+    const navigation = useNavigation<NativeStackNavigationProp>();
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => {
-                    // go to Movements
-                    navigation.navigate('Movements');
-                }}>
-                <Text style={styles.link}>Movements</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate('WeeklyTips');
-                }}>
-                <Text style={styles.link}>WeeklyTips</Text>
-            </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate('About');
@@ -31,7 +17,7 @@ const Menu = () => {
                 onPress={() => {
                     navigation.navigate('TermsAndConditions');
                 }}>
-                <Text style={styles.link}>TermsAndConditions</Text>
+                <Text style={styles.link}>Terms And Conditions</Text>
             </TouchableOpacity>
         </View>
     );

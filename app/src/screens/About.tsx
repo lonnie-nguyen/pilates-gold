@@ -6,7 +6,6 @@ import TopDrawerNavigator from "../Components/TopDrawerNavigation";
 const AboutScreen = () => {
     return (
         <View>
-            <TopDrawerNavigator/>
         </View>
     );
 };
