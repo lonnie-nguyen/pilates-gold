@@ -1,21 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import MovementScreen from './src/screens/Movements';
 import Homepage from './src/screens/Homepage'
 import {NavigationContainer} from "@react-navigation/native";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import WeeklyTipsScreen from "./src/screens/WeeklyTips";
 import AboutScreen from "./src/screens/About";
 import TermsAndConditionsScreen from "./src/screens/TermsAndConditions";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createDrawerNavigator} from "@react-navigation/drawer";
+import DrawerContent from "./src/Components/DrawerContent";
 
 const RootStack = createDrawerNavigator();
 
 export default function App() {
   return (
       <NavigationContainer>
-        <RootStack.Navigator useLegacyImplementation={true}>
+        <RootStack.Navigator useLegacyImplementation={true} drawerContent={DrawerContent}>
           <RootStack.Screen name="Pilates Gold" component={Homepage}/>
           <RootStack.Screen name="About" component={AboutScreen} />
           <RootStack.Screen name="Terms And Conditions" component={TermsAndConditionsScreen} />
