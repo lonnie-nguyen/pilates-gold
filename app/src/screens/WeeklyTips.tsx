@@ -16,7 +16,7 @@ export default class WeeklyTips extends React.Component<any, any> {
                 {
                     title: 'Week 2',
                     tips: ['Here is another inspirational picture. And some more filler text.', 'And some more text for texting here.', 'And here.'],
-                    mods: ['Filler modification.', 'Another filler modification.'],
+                    mods: ['Filler modification.', 'Another filler modification.', 'And some more.'],
                     image: 'https://images.unsplash.com/photo-1554290712-e640351074bd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1072&q=80',
                 },
                 {
