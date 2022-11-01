@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from "react-native";
 import Accordion from "../Components/Accordion";
+import {collection, getDocs, query} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
 
 export default class WeeklyTips extends React.Component<any, any> {
     constructor(props: { title: string; tips: Array<string>; mods: Array<string>; image: string }) {
         super(props);
         this.state = {
+            data: {},
             weeks:[
                 {
                     title: 'Week 1',
@@ -28,6 +31,20 @@ export default class WeeklyTips extends React.Component<any, any> {
             ]
         }
     }
+
+    componentDidMount() {
+        const q = query(collection(db, "weekly-moves"))
+        const setDatabase = async () => {
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                this.setState((prevState: { data: any; }) => ({
+                    data: {...prevState.data, [doc.id]: doc.data()},
+                }))
+            });
+        }
+        setDatabase();
+    }
+
     render () {
         return (
             <View style={styles.container}>
