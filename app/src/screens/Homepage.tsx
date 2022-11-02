@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet} from "react-native";
 import React from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import MovementScreen from "./Movements";
@@ -7,13 +7,15 @@ import WeeklyTipsScreen from "./WeeklyTips";
 const HomeTab = createMaterialTopTabNavigator();
 
 const Homepage = () => {
+
     return (
         <HomeTab.Navigator>
             <HomeTab.Screen name="Movements" component={MovementScreen}/>
             <HomeTab.Screen name="Weekly Tips" component={WeeklyTipsScreen}/>
         </HomeTab.Navigator>
     );
-};
+
+}
 
 const styles = StyleSheet.create({
     container: {
