@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-firebase/app": "^16.3.0",
+    "@react-native-firebase/app": "~15.4.0",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/material-top-tabs": "^6.3.0",
