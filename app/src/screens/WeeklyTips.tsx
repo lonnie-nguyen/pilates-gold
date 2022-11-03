@@ -3,12 +3,14 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import Accordion from "../Components/Accordion";
 import {collection, getDocs, query} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
+import { getStorage, ref, getDownloadURL } from "firebase/storage"
 
 export default class WeeklyTips extends React.Component<any, any> {
     constructor(props: { title: string; tips: Array<string>; mods: Array<string>; image: string }) {
         super(props);
         this.state = {
             data: {},
+            imageURLs: {},
             weeks:[
                 {
                     title: 'Week 1',
@@ -33,6 +35,7 @@ export default class WeeklyTips extends React.Component<any, any> {
     }
 
     componentDidMount() {
+        const storage = getStorage()
         const q = query(collection(db, "weekly-moves"))
         const setDatabase = async () => {
             const querySnapshot = await getDocs(q);
@@ -40,9 +43,33 @@ export default class WeeklyTips extends React.Component<any, any> {
                 this.setState((prevState: { data: any; }) => ({
                     data: {...prevState.data, [doc.id]: doc.data()},
                 }))
+                const value = doc.data()
+                if (value.imageURL) {
+                    const picRef = ref(storage, value.imageURL)
+                    getDownloadURL(picRef)
+                        .then((url) => {
+                            this.setState((prevState: { imageURLs: any; }) => ({
+                                imageURLs: {...prevState.imageURLs, [doc.id]: url},
+                            }))
+                        })
+                        .catch((error) => {
+                            switch (error.code) {
+                                case 'storage/object-not-found':
+                                    break;
+                                case 'storage/unauthorized':
+                                    break;
+                                case 'storage/canceled':
+                                    break;
+                                case 'storage/unknown':
+                                    break;
+                            }
+                        });
+                }
             });
+
         }
         setDatabase();
+
     }
 
     render () {
