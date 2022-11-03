@@ -11,7 +11,6 @@ export default class WeeklyTips extends React.Component<any, any> {
         this.state = {
             data: {},
             imageURLs: {},
-
         }
     }
 
