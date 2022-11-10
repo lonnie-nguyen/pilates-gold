@@ -6,7 +6,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 // You can define and add ExerciseCard for each movement inside MovementScreen() (Movements.tsx) as follow:
 // <ExerciseCard imageAddr={require('../../assets/pic1.jpeg')} name='Diaphragm Breathe' screenName="MovementInfo" />
-const ExerciseCard = (props: { screenName: any; imageAddr: ImageSourcePropType; name: string; }) => {
+const ExerciseCard = (props: { screenName: any; imageAddr: string; name: string; }) => {
   const navigation = useNavigation<NativeStackNavigationProp>();
   return (
     <View>
@@ -18,7 +18,7 @@ const ExerciseCard = (props: { screenName: any; imageAddr: ImageSourcePropType; 
         <Image
           style={styles.rectangleIcon}
           resizeMode="cover"
-          source={props.imageAddr}
+          source={{uri:props.imageAddr}}
         />
         <Text style={[styles.pilatesMoveText, styles.mt2]}>
           {props.name}
