@@ -1,33 +1,20 @@
-import React from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, LayoutAnimation, Platform, UIManager, FlatList, ListRenderItem } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import React, { useState, useEffect } from 'react'
+import { View, TouchableOpacity, Text, Image, StyleSheet, FlatList } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
-export default class Accordion extends React.Component<any, any> {
-    constructor(props: { tips: Array<string>; mods: Array<string>; title: string; imageURL: string }) {
-        super(props);
-        this.state = {
-            tips: props.tips,
-            mods: props.mods,
-            title: props.title,
-            image: props.imageURL,
-            expanded: false,
+const Accordion = ({ image, item, isExpanded, onClickFunction }:
+                       { image: any, item: any, isExpanded: boolean, onClickFunction: () => void }) => {
+    const[layoutHeight, setLayoutHeight] = useState<number | null>(0);
+
+    useEffect(() => {
+        if (isExpanded) {
+            setLayoutHeight(null);
+        } else {
+            setLayoutHeight(0);
         }
+    }, [isExpanded]);
 
-        if (Platform.OS == 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-    }
-
-    // for use with ListEmptyComponent in FlatList
-    emptyMsg = () => {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}>Nothing here this week!</Text>
-            </View>
-        )
-    }
-
-    renderBullets: ListRenderItem<any> = ({ item }) => {
+    const renderBullets = ({ item }: { item: string }) => {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>{`\u2022 ${item}`}</Text>
@@ -35,75 +22,75 @@ export default class Accordion extends React.Component<any, any> {
         )
     }
 
-    render() {
-        return (
-            <View>
-                <TouchableOpacity style={styles.row} onPress={() => this.toggleExpand()}>
-                    <Text style={styles.title}>{this.props.title}</Text>
-                    <Icon name={this.state.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-                          size={30} color='#000' />
-                </TouchableOpacity>
-                {
-                    this.state.expanded &&
-                    <View style={styles.child}>
-                        {(this.props.tips.length != 0) &&
-                        <Text style={styles.header}>Tips</Text>}
-                        <FlatList data={this.props.tips} renderItem={this.renderBullets} />
-                        <Text style={styles.header}>{(this.props.mods.length != 0) && ('Modifications')}</Text>
-                        <FlatList data={this.props.mods} renderItem={this.renderBullets} />
-                        <Image style={styles.rectangleIcon} resizeMode="cover" source={{uri:this.props.image}}/>
-                    </View>
-                }
-                <View style={styles.separator} />
-            </View>
-        )
-    }
-    toggleExpand = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState({expanded : !this.state.expanded})
-    }
+    return (
+        <View>
+            {/* Header of Accordion */}
+            <TouchableOpacity activeOpacity={0.9} onPress={onClickFunction} style={styles.header}>
+                <Text style={styles.headerText}>{item.title}</Text>
+                <Icon name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'#000'} />
+            </TouchableOpacity>
+            {/* Content under the Header */}
+            {
+                isExpanded &&
+                <View style={styles.panel}>
+                    {
+                        item.tips.length != 0 &&
+                        <Text style={styles.subHeader}>Tips</Text>
+                    }
+                    <FlatList data={item.tips} renderItem={renderBullets} scrollEnabled={false}
+                              listKey={'tips' + Date.now().toString()}
+                              keyExtractor={() => 'T' + Math.random().toString(36).substr(2, 9)} />
+                    {
+                        item.mods.length != 0 &&
+                        <Text style={styles.subHeader}>Mods</Text>
+                    }
+                    <FlatList data={item.mods} renderItem={renderBullets} scrollEnabled={false}
+                              listKey={'mods' + Date.now().toString()}
+                              keyExtractor={() => 'M' + Math.random().toString(36).substr(2, 9)} />
+                    <Image style={styles.rectangleIcon} resizeMode={'cover'} source={{uri:image}} />
+                </View>
+
+            }
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
-    title:{
-        fontFamily:'Poppins',
+    header: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderRadius: 10,
+        height: 50,
+        width: 355,
+        paddingLeft: 25,
+        paddingRight: 18,
+        marginTop: 10,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderColor: '#000',
+        borderWidth: 0.25,
+    },
+    headerText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#000',
     },
-    header:{
-      fontFamily: 'Poppins',
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: '#000',
-      textAlign: 'left',
-    },
-    child:{
-       backgroundColor: '#f4f4f4',
-       borderRadius: 10,
-       padding: 10,
-        width: '80%',
-    },
-    text:{
-        fontFamily: 'Poppins',
-        fontSize: 15,
+    subHeader: {
+        fontSize: 16,
+        fontWeight: 'bold',
         color: '#000',
         textAlign: 'left',
-        paddingHorizontal: 5,
-        paddingVertical: 5,
     },
-    row:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderRadius: 10,
-        width: '80%',
-        height: 50,
-        paddingLeft: 25,
-        paddingRight: 18,
-        alignItems: 'center',
-        backgroundColor: '#fff',
+    container: {
+        backgroundColor: 'transparent',
     },
-    rectangleIcon:{
+    text: {
+        fontSize: 16,
+        color: '#606070',
+        padding: 10,
+    },
+    rectangleIcon: {
         position: 'relative',
         borderRadius: 10,
         width: '100%',
@@ -111,14 +98,16 @@ const styles = StyleSheet.create({
         flexShrink: 0,
         overflow: 'hidden',
         borderWidth: 0.25,
-        borderColor: '#000'
+        borderColor: '#000',
     },
-    separator:{
-        height: 10,
-        color: 'transparent',
-        width: '100%',
-    },
-    container:{
-        backgroundColor: 'transparent',
-    },
+    panel: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 10,
+        width: 355,
+        borderWidth: 0.25,
+        borderColor: '#000',
+    }
 })
+
+export default Accordion;
