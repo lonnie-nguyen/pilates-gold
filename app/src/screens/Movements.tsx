@@ -16,8 +16,7 @@ export default class MovementScreen extends React.Component<any, any> {
 
     componentDidMount() {
         const storage = getStorage()
-        // const q = query(collection(db, "movements"))
-        const q = query(collection(db, "weekly-moves"))
+        const q = query(collection(db, "movements"))
         const setDatabase = async () => {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
@@ -25,8 +24,9 @@ export default class MovementScreen extends React.Component<any, any> {
                     data: {...prevState.data, [doc.id]: doc.data()},
                 }))
                 const value = doc.data()
-                if (value.imageURL) {
-                    const picRef = ref(storage, value.imageURL)
+                if (value.imageURLs && value.imageURLs[0]) {
+                    console.log(value.imageURLs[0])
+                    const picRef = ref(storage, value.imageURLs[0])
                     getDownloadURL(picRef)
                         .then((url) => {
                             this.setState((prevState: { imageURLs: any; }) => ({
