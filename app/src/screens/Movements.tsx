@@ -86,7 +86,7 @@ export default class MovementScreen extends React.Component<any, any> {
 const styles = StyleSheet.create({
     movementsView: {
       position: "relative",
-      backgroundColor: "#f9eebf",
+      backgroundColor: "#D9EBF2",
       flex: 1,
       paddingLeft: 10,
       paddingRight:10,
