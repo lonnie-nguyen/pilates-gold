@@ -13,6 +13,7 @@ const WeeklyTips = () => {
     useEffect(() => {
         const setDatabase = async () => {
             const querySnapshot = await getDocs(collection(db, 'weekly-moves'));
+            const storage = getStorage();
 
             // Data object into arrays
             const dataArr:any = [];
@@ -22,7 +23,6 @@ const WeeklyTips = () => {
                 dataArr.push({...doc.data(), id: doc.id});
                 const value = doc.data();
                 if (value.imageURL) {
-                    const storage = getStorage();
                     imageArr.push(getDownloadURL(ref(storage, value.imageURL)))
                 }
             });
