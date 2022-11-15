@@ -10,42 +10,29 @@ const WeeklyTips = () => {
     const [imageURLs, setImageURLs] = useState<any>([]);
     const [currentIdx, setCurrentIdx] = useState<number>(-1);
 
-    const storage = getStorage()
-
-    const getImageURL = async (imageURL: string | undefined) => {
-        getDownloadURL(ref(storage, imageURL))
-            .then((url) => {
-                return url
-            }).catch((error) => {
-            switch (error.code) {
-                case 'storage/object-not-found':
-                    break;
-                case 'storage/unauthorized':
-                    break;
-                case 'storage/canceled':
-                    break;
-                case 'storage/unknown':
-                    break;
-            }
-        })
-    }
-
     useEffect(() => {
         const setDatabase = async () => {
             const querySnapshot = await getDocs(collection(db, 'weekly-moves'));
 
-            // Map data object into arrays
+            // Data object into arrays
             const dataArr:any = [];
             const imageArr:any = [];
+
             querySnapshot.forEach((doc) => {
                 dataArr.push({...doc.data(), id: doc.id});
                 const value = doc.data();
                 if (value.imageURL) {
-                    imageArr.push(await getImageURL(value.imageURL))
+                    const storage = getStorage();
+                    imageArr.push(getDownloadURL(ref(storage, value.imageURL)))
                 }
             });
+
+            // Await returned values and then filter to remove any null values
+            const urls = (await Promise.all(imageArr)).filter(url => !!url);
+
+            // Set states
             setData(dataArr);
-            setImageURLs(imageArr);
+            setImageURLs(urls);
         };
         setDatabase();
     }, []);
