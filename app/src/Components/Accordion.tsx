@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { View, TouchableOpacity, Text, Image, StyleSheet, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-const Accordion = ({ image, item, isExpanded, onClickFunction }:
-                       { image: any, item: any, isExpanded: boolean, onClickFunction: () => void }) => {
+const Accordion = ({ item, isExpanded, onClickFunction }:
+                       { item: any, isExpanded: boolean, onClickFunction: () => void }) => {
     const[layoutHeight, setLayoutHeight] = useState<number | null>(0);
+    let idx = 0;
 
     useEffect(() => {
         if (isExpanded) {
@@ -13,14 +14,6 @@ const Accordion = ({ image, item, isExpanded, onClickFunction }:
             setLayoutHeight(0);
         }
     }, [isExpanded]);
-
-    const renderBullets = ({ item }: { item: string }) => {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}>{`\u2022 ${item}`}</Text>
-            </View>
-        )
-    }
 
     return (
         <View>
@@ -37,17 +30,38 @@ const Accordion = ({ image, item, isExpanded, onClickFunction }:
                         item.tips.length != 0 &&
                         <Text style={styles.subHeader}>Tips</Text>
                     }
-                    <FlatList data={item.tips} renderItem={renderBullets} scrollEnabled={false}
-                              listKey={'tips' + Date.now().toString()}
-                              keyExtractor={() => 'T' + Math.random().toString(36).substr(2, 9)} />
+                    {/* Map tips and images */}
+                    {
+                        item.tips.map((tip:string, index:number) => {
+                            return (
+                                <View key={index}>
+                                    {
+                                        tip === 'image'
+                                        ? <Image style={styles.imageContainer} resizeMode={'contain'} source={{uri:item.imageURLs[idx++]}} />
+                                        : <Text style={styles.text}>{`\u2022 ${tip}`}</Text>
+                                    }
+                                </View>
+                            )
+                        })
+                    }
                     {
                         item.mods.length != 0 &&
-                        <Text style={styles.subHeader}>Mods</Text>
+                        <Text style={styles.subHeader2}>Mods</Text>
                     }
-                    <FlatList data={item.mods} renderItem={renderBullets} scrollEnabled={false}
-                              listKey={'mods' + Date.now().toString()}
-                              keyExtractor={() => 'M' + Math.random().toString(36).substr(2, 9)} />
-                    <Image style={styles.rectangleIcon} resizeMode={'cover'} source={{uri:image}} />
+                    {/* Map mods and images */}
+                    {
+                        item.mods.map((mod:string, index:number) => {
+                            return (
+                                <View key={index}>
+                                    {
+                                        mod === 'image'
+                                        ? <Image style={styles.imageContainer} resizeMode={'contain'} source={{uri:item.imageURLs[idx++]}} />
+                                        : <Text style={styles.text}>{`\u2022 ${mod}`}</Text>
+                                    }
+                                </View>
+                            )
+                        })
+                    }
                 </View>
 
             }
@@ -82,6 +96,13 @@ const styles = StyleSheet.create({
         color: '#000',
         textAlign: 'left',
     },
+    subHeader2: {
+        paddingTop: 10,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#000',
+        textAlign: 'left',
+    },
     container: {
         backgroundColor: 'transparent',
     },
@@ -90,15 +111,12 @@ const styles = StyleSheet.create({
         color: '#606070',
         padding: 10,
     },
-    rectangleIcon: {
+    imageContainer: {
         position: 'relative',
         borderRadius: 10,
         width: '100%',
         height: 185,
         flexShrink: 0,
-        overflow: 'hidden',
-        borderWidth: 0.25,
-        borderColor: '#000',
     },
     panel: {
         backgroundColor: '#fff',

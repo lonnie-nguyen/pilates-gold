@@ -7,32 +7,21 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 
 const WeeklyTips = () => {
     const [data, setData] = useState<any>([]);
-    const [imageURLs, setImageURLs] = useState<any>([]);
     const [currentIdx, setCurrentIdx] = useState<number>(-1);
 
     useEffect(() => {
         const setDatabase = async () => {
             const querySnapshot = await getDocs(collection(db, 'weekly-moves'));
-            const storage = getStorage();
 
-            // Data object into arrays
+            // Data object into array
             const dataArr:any = [];
-            const imageArr:any = [];
 
             querySnapshot.forEach((doc) => {
                 dataArr.push({...doc.data(), id: doc.id});
-                const value = doc.data();
-                if (value.imageURL) {
-                    imageArr.push(getDownloadURL(ref(storage, value.imageURL)))
-                }
             });
 
-            // Await returned values and then filter to remove any null values
-            const urls = (await Promise.all(imageArr)).filter(url => !!url);
-
-            // Set states
+            // Set state
             setData(dataArr);
-            setImageURLs(urls);
         };
         setDatabase();
     }, []);
@@ -53,7 +42,7 @@ const WeeklyTips = () => {
     // To be used with FlatList renderItem component: renders an accordion object
     const renderAccordion = ({ item, index }: { item: any, index: number }) => {
         return (
-            <Accordion key={item.title} image={imageURLs[index]} item={item} isExpanded={index === currentIdx}
+            <Accordion key={item.title} item={item} isExpanded={index === currentIdx}
                        onClickFunction={() => onClick(index)} />
         )
     }
