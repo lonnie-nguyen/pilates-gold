@@ -1,92 +1,73 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet } from "react-native";
-import Accordion from "../Components/Accordion";
-import {collection, getDocs, query} from "firebase/firestore";
-import {db} from "../../firebaseConfig";
-import { getStorage, ref, getDownloadURL } from "firebase/storage"
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Platform, UIManager, LayoutAnimation, FlatList } from 'react-native'
+import Accordion from '../Components/Accordion'
+import { collection, getDocs, query } from 'firebase/firestore'
+import { db } from '../../firebaseConfig'
+import { getStorage, ref, getDownloadURL } from 'firebase/storage'
 
-export default class WeeklyTips extends React.Component<any, any> {
-    constructor(props: { title: string; tips: Array<string>; mods: Array<string>; imageURL: string }) {
-        super(props);
-        this.state = {
-            data: {},
-            imageURLs: {},
-        }
-    }
+const WeeklyTips = () => {
+    const [data, setData] = useState<any>([]);
+    const [currentIdx, setCurrentIdx] = useState<number>(-1);
 
-    componentDidMount() {
-        const storage = getStorage()
-        const q = query(collection(db, "weekly-moves"))
+    useEffect(() => {
         const setDatabase = async () => {
-            const querySnapshot = await getDocs(q);
+            const querySnapshot = await getDocs(collection(db, 'weekly-moves'));
+
+            // Data object into array
+            const dataArr:any = [];
+
             querySnapshot.forEach((doc) => {
-                this.setState((prevState: { data: any; }) => ({
-                    data: {...prevState.data, [doc.id]: doc.data()},
-                }))
-                const value = doc.data()
-                if (value.imageURL) {
-                    const picRef = ref(storage, value.imageURL)
-                    getDownloadURL(picRef)
-                        .then((url) => {
-                            this.setState((prevState: { imageURLs: any; }) => ({
-                                imageURLs: {...prevState.imageURLs, [doc.id]: url},
-                            }))
-                        })
-                        .catch((error) => {
-                            switch (error.code) {
-                                case 'storage/object-not-found':
-                                    break;
-                                case 'storage/unauthorized':
-                                    break;
-                                case 'storage/canceled':
-                                    break;
-                                case 'storage/unknown':
-                                    break;
-                            }
-                        });
-                }
+                dataArr.push({...doc.data(), id: doc.id});
             });
 
-        }
+            // Set state
+            setData(dataArr);
+        };
         setDatabase();
+    }, []);
 
+    // For Android see https://reactnative.dev/docs/layoutanimation
+    if (Platform.OS === 'android' &&
+        UIManager.setLayoutAnimationEnabledExperimental
+    ) {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
     }
 
-    render () {
+    // Limits only 1 accordion to be open at a time and closes the current open accordion
+    const onClick = (index: number) => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setCurrentIdx((currentIdx) => (currentIdx !== index ? index : -1));
+    }
+
+    // To be used with FlatList renderItem component: renders an accordion object
+    const renderAccordion = ({ item, index }: { item: any, index: number }) => {
         return (
-            <View style={styles.container}>
-                <ScrollView showsHorizontalScrollIndicator={false}
-                            alwaysBounceHorizontal={false}
-                            alwaysBounceVertical={false}
-                            bounces={false}
-                            contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 10}}>
-                    { this. renderAccordions() }
-                </ScrollView>
-            </View>
-        );
+            <Accordion key={item.title} item={item} isExpanded={index === currentIdx}
+                       onClickFunction={() => onClick(index)} />
+        )
     }
-    renderAccordions = () => {
-        const items = [];
-        for (const [key, value] of Object.entries(this.state.data)) {
-            items.push(
-                <Accordion tips={this.state.data[key].tips} mods={this.state.data[key].mods}
-                           title={this.state.data[key].title} image={this.state.imageURLs[key]} />
-            );
-        }
-        return items;
-    }
-}
+
+    return (
+        <View style={styles.container}>
+            <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={renderAccordion} listKey={'main'}
+                      keyExtractor={item => item.id + Math.random().toString(36).substr(2, 9)} />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         position: 'relative',
-        backgroundColor: '#f9eebf',
-        flex:1,
-        padding: 10,
+        backgroundColor: '#d9ebf2',
         width: '100%',
         height: '100%',
+        paddingLeft: 10,
+        paddingRight:10,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-    }
-})
+        justifyContent: 'center',
+    },
+});
+
+export default WeeklyTips;
