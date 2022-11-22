@@ -6,14 +6,14 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 // You can define and add ExerciseCard for each movement inside MovementScreen() (Movements.tsx) as follow:
 // <ExerciseCard imageAddr={require('../../assets/pic1.jpeg')} name='Diaphragm Breathe' screenName="MovementInfo" />
-const ExerciseCard = (props: { screenName: any; imageAddr: string; name: string; }) => {
+const ExerciseCard = (props: { screenName: any; imageAddr: string; name: string; data: any}) => {
   const navigation = useNavigation<NativeStackNavigationProp>();
   return (
     <View>
       <Pressable
         style={styles.cardPressable}
         //We need to add screens for each movement which would contain muscle map
-        onPress={() => navigation.navigate(props.screenName)}
+        onPress={() => navigation.navigate(props.screenName, {props})}
       >
         <Image
           style={styles.rectangleIcon}
