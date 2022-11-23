@@ -25,7 +25,6 @@ const MovementInfo = ({route}:{route: any}) => {
                 resizeMode="cover"
                 source={{uri:route.params.props.data.muscleUrl}}
             />
-                {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
         </ScrollView>
     );
 };

@@ -10,8 +10,7 @@ export default class MovementScreen extends React.Component<any, any> {
         super(props);
         this.state = {
             data: {},
-            imageURLs: {},
-            muscleURL: {},
+            imgUrl:{},
         };
     }
 
@@ -26,50 +25,10 @@ export default class MovementScreen extends React.Component<any, any> {
                 }))
                 const value = doc.data()
                 if (value.imageURLs && value.imageURLs[0]) {
-                    console.log(value.imageURLs[0])
-                    const picRef = ref(storage, value.imageURLs[0])
-                    getDownloadURL(picRef)
-                        .then((url) => {
-                            this.setState((prevState: { imageURLs: any; }) => ({
-                                imageURLs: {...prevState.imageURLs, [doc.id]: url},
-                            }))
-                        })
-                        .catch((error) => {
-                            switch (error.code) {
-                                case 'storage/object-not-found':
-                                    break;
-                                case 'storage/unauthorized':
-                                    break;
-                                case 'storage/canceled':
-                                    break;
-                                case 'storage/unknown':
-                                    break;
-                            }
-                        });
+                    this.setState((prevState: { imgUrl: any; }) => ({
+                        imgUrl: {...prevState.imgUrl, [doc.id]: value.imageURLs[0]},
+                    }))
                 }
-                if (value.muscleMap) {
-                    console.log(value.muscleMap)
-                    const picRef = ref(storage, value.muscleMap)
-                    getDownloadURL(picRef)
-                        .then((url) => {
-                            this.setState((prevState: { muscleURL: any; }) => ({
-                                muscleURL: {...prevState.muscleURL, [doc.id]: url},
-                            }))
-                        })
-                        .catch((error) => {
-                            switch (error.code) {
-                                case 'storage/object-not-found':
-                                    break;
-                                case 'storage/unauthorized':
-                                    break;
-                                case 'storage/canceled':
-                                    break;
-                                case 'storage/unknown':
-                                    break;
-                            }
-                        });
-                }
-
             });
 
         }
@@ -81,8 +40,10 @@ export default class MovementScreen extends React.Component<any, any> {
         const items = [];
         for (const [key, value] of Object.entries(this.state.data)) {
             items.push(
-                {title : this.state.data[key].title, url : this.state.imageURLs[key], screenName : "MovementInfo", muscleUrl: this.state.muscleURL[key] }
+                {title : this.state.data[key].title, url : this.state.imgUrl[key], screenName : "MovementInfo", muscleUrl : this.state.data[key].muscleMap}
+
             );
+            console.log(this.state.imgUrl[key])
         }
         return items;
     }
