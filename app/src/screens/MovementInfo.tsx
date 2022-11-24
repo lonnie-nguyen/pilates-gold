@@ -1,4 +1,4 @@
-import {ScrollView, Text, StyleSheet, Button, Image} from 'react-native';
+import {ScrollView, Text, StyleSheet, View, Image, FlatList} from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -6,6 +6,17 @@ import { useNavigation } from '@react-navigation/native';
 const MovementInfo = ({route}:{route: any}) => {
     
     const navigation = useNavigation<NativeStackNavigationProp>();
+
+    const renderImages = ({item}: {item: any}) => {
+        return (
+            <Image
+                style={styles.rectangleIcon}
+                resizeMode="cover"
+                source={{uri:item}}
+            />
+        )
+    }
+
     return (
 
         <ScrollView
@@ -14,11 +25,11 @@ const MovementInfo = ({route}:{route: any}) => {
         contentContainerStyle={styles.bodyScrollViewContent}
         >
             <Text style={styles.titleText}>{route.params.props.data.title}</Text>
-            <Image
-                style={styles.rectangleIcon}
-                resizeMode="cover"
-                source={{uri:route.params.props.data.url}}
-            />
+
+            <FlatList showsVerticalScrollIndicator={false} 
+                        data={route.params.props.data.urls} 
+                        renderItem={renderImages}/>
+
             <Text style={styles.titleText}>Muscle Map</Text>
             <Image
                 style={styles.rectangleIcon}
@@ -64,7 +75,8 @@ const styles = StyleSheet.create({
         flexShrink: 0,
         overflow: "hidden",
         borderWidth: 0.25,
-        borderColor: "#000"
+        borderColor: "#000",
+        marginBottom: 10,
     }
 });
 

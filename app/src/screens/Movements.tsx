@@ -10,7 +10,6 @@ export default class MovementScreen extends React.Component<any, any> {
         super(props);
         this.state = {
             data: {},
-            imgUrl:{},
         };
     }
 
@@ -23,12 +22,6 @@ export default class MovementScreen extends React.Component<any, any> {
                 this.setState((prevState: { data: any; }) => ({
                     data: {...prevState.data, [doc.id]: doc.data()},
                 }))
-                const value = doc.data()
-                if (value.imageURLs && value.imageURLs[0]) {
-                    this.setState((prevState: { imgUrl: any; }) => ({
-                        imgUrl: {...prevState.imgUrl, [doc.id]: value.imageURLs[0]},
-                    }))
-                }
             });
 
         }
@@ -40,17 +33,16 @@ export default class MovementScreen extends React.Component<any, any> {
         const items = [];
         for (const [key, value] of Object.entries(this.state.data)) {
             items.push(
-                {title : this.state.data[key].title, url : this.state.imgUrl[key], screenName : "MovementInfo", muscleUrl : this.state.data[key].muscleMap}
+                {title : this.state.data[key].title, urls : this.state.data[key].imageURLs, screenName : "MovementInfo", muscleUrl : this.state.data[key].muscleMap}
 
             );
-            console.log(this.state.imgUrl[key])
         }
         return items;
     }
 
     renderCard = ({item}: {item: any}) => {
         return (
-          <ExerciseCard screenName={item.screenName} imageAddr={item.url} name={item.title} data={item} />
+          <ExerciseCard screenName={item.screenName} imageAddr={item.urls[0]} name={item.title} data={item} />
         )
     }
 
