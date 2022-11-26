@@ -10,7 +10,6 @@ import { NavigationContainer } from '@react-navigation/native';
 const HomeTab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
 
-//TODO, update navigation.
 function Root() {
     return (
         <HomeTab.Navigator>
@@ -23,17 +22,17 @@ function Root() {
 const Homepage = () => {
     
     return (
-            // <HomeTab.Navigator>
-            //     <HomeTab.Screen name="Movements" component={MovementScreen}/>
-            //     <HomeTab.Screen name="Weekly Tips" component={WeeklyTipsScreen}/>
-            // </HomeTab.Navigator>
             <NavigationContainer independent={true}>
                 <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen
                         name="Root"
                         component={Root}
                     />
-                    <Stack.Screen name="MovementInfo" component={MovementInfo} options={{headerShown: true, headerTitle: "Movement", headerTitleAlign: 'center'}}/>
+                    <Stack.Screen 
+                        name="MovementInfo"
+                        component={MovementInfo}
+                        options={{headerShown: true, headerTitle: "Movement", headerTitleAlign: 'center'}}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
             );
