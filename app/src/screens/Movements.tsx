@@ -10,7 +10,6 @@ export default class MovementScreen extends React.Component<any, any> {
         super(props);
         this.state = {
             data: {},
-            imageURLs: {},
         };
     }
 
@@ -23,29 +22,6 @@ export default class MovementScreen extends React.Component<any, any> {
                 this.setState((prevState: { data: any; }) => ({
                     data: {...prevState.data, [doc.id]: doc.data()},
                 }))
-                const value = doc.data()
-                if (value.imageURLs && value.imageURLs[0]) {
-                    console.log(value.imageURLs[0])
-                    const picRef = ref(storage, value.imageURLs[0])
-                    getDownloadURL(picRef)
-                        .then((url) => {
-                            this.setState((prevState: { imageURLs: any; }) => ({
-                                imageURLs: {...prevState.imageURLs, [doc.id]: url},
-                            }))
-                        })
-                        .catch((error) => {
-                            switch (error.code) {
-                                case 'storage/object-not-found':
-                                    break;
-                                case 'storage/unauthorized':
-                                    break;
-                                case 'storage/canceled':
-                                    break;
-                                case 'storage/unknown':
-                                    break;
-                            }
-                        });
-                }
             });
 
         }
@@ -57,7 +33,8 @@ export default class MovementScreen extends React.Component<any, any> {
         const items = [];
         for (const [key, value] of Object.entries(this.state.data)) {
             items.push(
-                {title : this.state.data[key].title, url : this.state.imageURLs[key], screenName : "MovementInfo"}
+                {title : this.state.data[key].title, urls : this.state.data[key].imageURLs, screenName : "MovementInfo", muscleUrl : this.state.data[key].muscleMap}
+
             );
         }
         return items;
@@ -65,7 +42,7 @@ export default class MovementScreen extends React.Component<any, any> {
 
     renderCard = ({item}: {item: any}) => {
         return (
-          <ExerciseCard screenName={item.screenName} imageAddr={item.url} name={item.title} />
+          <ExerciseCard screenName={item.screenName} imageAddr={item.urls[0]} name={item.title} data={item} />
         )
     }
 
