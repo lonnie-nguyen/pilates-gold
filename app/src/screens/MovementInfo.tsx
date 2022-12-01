@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
         position: "relative",
         fontSize: 16,
         fontWeight: "bold",
-        fontFamily: "Poppins",
         color: "#000",
         textAlign: "center",
         width: 343,
