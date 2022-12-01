@@ -8,6 +8,8 @@ of Medicine. The app provides an accessible way for seniors of the Pilates
 program to have a deeper understanding of the benefits of Pilates and take 
 charge of their health. 
 
+Refer to docs for information about tech architecture and other related technical aspects of the project
+
 ## 🚀 Getting Started
 
 ### To Contribute:
