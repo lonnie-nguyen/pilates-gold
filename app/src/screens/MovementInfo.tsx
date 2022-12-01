@@ -3,9 +3,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 //This is weekly tips page
-const MovementInfo = ({route}:{route: any}) => {
-    
-    const navigation = useNavigation<NativeStackNavigationProp>();
+const MovementInfo = ({route} : {route: any}) => {
 
     const renderImages = ({item}: {item: any}) => {
         return (
